@@ -1,3 +1,5 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
 <title>Портфель решений</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Onest:wght@400;500;600&display=swap">
@@ -228,7 +230,7 @@ p{margin:0}
 .mbox .prod{padding:32px;border-radius:16px}
 .mbox .val{font-size:30px}
 .ctc .ctl{display:flex;flex-direction:column;gap:8px;font-size:20px;padding:6px 0 4px}.ctc .ctl a{color:inherit;font-weight:600;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:2px;text-underline-offset:4px;width:fit-content}
-.wa{display:inline-flex;align-items:center;gap:8px;width:fit-content;padding:12px 20px;border-radius:999px;background:#25D366;color:#0B2E17!important;font-weight:600;font-size:16px;text-decoration:none!important}.wa:hover{filter:brightness(1.05)}.wa:focus{outline:none}.wa:focus-visible{outline:3px solid var(--accent);outline-offset:3px}.ctl-row{align-items:center!important;flex-wrap:wrap;row-gap:16px!important}.ctl-row>*{line-height:1.2}.ctl-row .wa{font-size:16px;padding:10px 18px;line-height:1.2}.ctc .wa{margin:6px 0 4px}
+.wa{display:inline-flex;align-items:center;gap:8px;width:fit-content;padding:12px 20px;border-radius:999px;background:#25D366;color:#0B2E17!important;font-weight:600;font-size:16px;text-decoration:none!important}.wa:hover{filter:brightness(1.05)}@media (max-width:640px){.zbtn .zt{white-space:nowrap}}.wa:focus{outline:none}.wa:focus-visible{outline:3px solid var(--accent);outline-offset:3px}.ctl-row{align-items:center!important;flex-wrap:wrap;row-gap:16px!important}.ctl-row>*{line-height:1.2}.ctl-row .wa{font-size:16px;padding:10px 18px;line-height:1.2}.ctc .wa{margin:6px 0 4px}
 .mclose{position:absolute;top:10px;right:10px;z-index:1;color:var(--on-dark-muted)}
 .mbox .prod:not(.key)+.mclose,.mbox:has(.prod:not(.key)) .mclose{color:var(--muted)}
 @media (prefers-reduced-motion:no-preference){.mbox{animation:pop .18s ease-out}@keyframes pop{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}}
@@ -520,3 +522,5 @@ document.addEventListener("keydown",e=>{if(cur().v==="sec"||!document.getElement
  if(["ArrowDown","PageDown"].includes(e.key)){e.preventDefault();bs[Math.min(i+1,bs.length-1)].scrollIntoView({behavior:"smooth"})}
  if(["ArrowUp","PageUp"].includes(e.key)){e.preventDefault();bs[Math.max(i-1,0)].scrollIntoView({behavior:"smooth"})}});
 </script>
+
+</body></html>
