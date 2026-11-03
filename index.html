@@ -143,6 +143,8 @@ p{margin:0}
 .bar2.y{background:var(--accent);color:var(--accent-ink)}
 .bar2.d{background:var(--dark-2);color:var(--on-dark)}.bar2.d span:not(.ugo){color:var(--on-dark-muted)}.bar2.d .ugo{color:var(--accent)}
 .bar2:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.bar2 .ugo{display:inline-block}
+@media (prefers-reduced-motion:no-preference){.bar2{transition:transform .15s,box-shadow .15s,filter .15s}.bar2 .ugo{transition:transform .15s}.bar2:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.10)}.bar2.y:hover{filter:brightness(1.04)}.bar2.d:hover{border-color:var(--ink)}.bar2:hover .ugo{transform:translateX(4px)}}
 .land{--fd:var(--f-display);--fb:var(--f-body);--mut:var(--muted);--dk:var(--dark);--dk2:var(--dark-2);--ondk:var(--on-dark);--ondkm:var(--on-dark-muted);--acc:var(--accent);--acct:var(--accent-text);--ok:#2f6f4e;font:17px/1.5 var(--f-body);color:var(--ink);background:var(--bg);border-radius:16px;overflow:hidden}
 .mbox.wide{width:min(980px,100%)}
 .land .Lblk{padding:36px clamp(20px,4vw,48px);display:flex;flex-direction:column;gap:18px}
@@ -463,7 +465,7 @@ function menu(){return `<div class="screen"><div class="inner">
  <p class="mnote">¹ Gartner: автоматизация вместе с перестройкой процессов, оценка 2021. ² Kaspi, справка для продавцов: покупка в рассрочку против оплаты своими деньгами. ³ Самрук-Казына, итоги закупок 2020 (Forbes.kz).</p>
  <span class="eyebrow" style="margin-top:10px">Решения для отраслей</span>
  <div class="tiles">${["ind","gov"].map(k=>tileH(S[k].t,S[k].what,S[k].for,`data-go="sec-${k}"`)).join("")}${tileH("Бани, СПА и клубы","Больше записей, допродаж и постоянных гостей","Бани, СПА, спортклубы",`data-p="bath"`)}</div>
- <div class="bars2"><button class="bar2 y" data-p="digital"><h3>Ищете, с чего начать?</h3><span>Проведём обследование процессов и найдём, где теряются деньги</span><span class="ugo">Подробнее →</span></button><button class="bar2 d" data-p="dev"><h3>Нужно своё решение?</h3><span>Разработаем под ваши процессы: личные кабинеты, порталы, сайты и приложения</span><span class="ugo">Подробнее →</span></button></div>
+ <div class="bars2"><button class="bar2 y" data-p="digital"><h3>Не знаете, с чего начать?</h3><span>Проведём обследование процессов и найдём, где теряются деньги</span><span class="ugo">Подробнее →</span></button><button class="bar2 d" data-p="dev"><h3>Нужно своё решение?</h3><span>Разработаем под ваши процессы: личные кабинеты, порталы, сайты и приложения</span><span class="ugo">Подробнее →</span></button></div>
  </div></div>`}
 function sec(k){const s=S[k];
  app.innerHTML=`<div class="screen"><div class="inner">${bar()}
