@@ -56,7 +56,7 @@ p{margin:0}
 .tile .go{font-weight:600;font-size:15px}
 .tile .tt{display:flex;flex-direction:column;gap:10px}.tile .tw{font-size:17px;line-height:1.4;color:var(--ink)}
 .tile .tags{margin-top:6px}.tile{gap:24px}@media (max-width:640px){.tile{min-height:0}}
-.tags{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}.tags li{font-size:13px;line-height:1;padding:7px 10px;border-radius:999px;background:var(--bg);border:1px solid var(--line);color:var(--muted)}
+.tags{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}.tags li{font-size:13px;line-height:1;padding:7px 10px;border-radius:6px;background:var(--bg);border:1px solid var(--line);color:var(--muted)}
 .tile.accent{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 .tile.accent p,.tile.accent .num{color:var(--accent-ink)}
 @media (prefers-reduced-motion:no-preference){.tile{transition:transform .15s,border-color .15s}.tile:hover{transform:translateY(-3px);border-color:var(--ink)}}
@@ -230,7 +230,15 @@ p{margin:0}
 .mbox .prod{padding:32px;border-radius:16px}
 .mbox .val{font-size:30px}
 .ctc .ctl{display:flex;flex-direction:column;gap:8px;font-size:20px;padding:6px 0 4px}.ctc .ctl a{color:inherit;font-weight:600;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:2px;text-underline-offset:4px;width:fit-content}
-.wa{display:inline-flex;align-items:center;gap:8px;width:fit-content;padding:12px 20px;border-radius:999px;background:#25D366;color:#0B2E17!important;font-weight:600;font-size:16px;text-decoration:none!important}.wa:hover{filter:brightness(1.05)}@media (max-width:640px){.zbtn .zt{white-space:nowrap}}.wa:focus{outline:none}.wa:focus-visible{outline:3px solid var(--accent);outline-offset:3px}.ctl-row{align-items:center!important;flex-wrap:wrap;row-gap:16px!important}.ctl-row>*{line-height:1.2}.ctl-row .wa{font-size:16px;padding:10px 18px;line-height:1.2}.ctc .wa{margin:6px 0 4px}
+.ctc-scr{justify-content:center;gap:48px}.ctc-top{display:flex;flex-direction:column;gap:20px}
+.ctc-box{display:flex;flex-direction:column;gap:12px;padding-top:28px;border-top:1px solid rgba(255,255,255,.12);max-width:880px}
+.ctc-who{font-size:15px;color:var(--on-dark-muted)}
+.ctc-row{display:flex;align-items:center;flex-wrap:wrap;gap:16px 32px;font-size:20px}
+.ctc-l{color:inherit;text-decoration:none;line-height:1.2}.ctc-l.acc{color:var(--accent)}.ctc-l:hover{text-decoration:underline;text-underline-offset:4px}
+.ctc-wa{min-height:48px;padding:0 20px;text-decoration:none;margin-left:auto;transition:filter .15s}.ctc-wa:hover{filter:brightness(1.06)}
+.ctc .ctc-mwa{margin:8px 0 4px;width:fit-content}
+@media (max-width:640px){.ctc-scr{justify-content:flex-start;gap:32px;padding-top:40px}.ctc-row{flex-direction:column;align-items:flex-start;gap:12px;font-size:18px}.ctc-wa{margin-left:0;width:100%;justify-content:center;margin-top:8px}}
+@media (max-width:640px){.zbtn .zt{white-space:nowrap}}
 .mclose{position:absolute;top:10px;right:10px;z-index:1;color:var(--on-dark-muted)}
 .mbox .prod:not(.key)+.mclose,.mbox:has(.prod:not(.key)) .mclose{color:var(--muted)}
 @media (prefers-reduced-motion:no-preference){.mbox{animation:pop .18s ease-out}@keyframes pop{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}}
@@ -496,7 +504,7 @@ try{await Promise.race([dlP,new Promise(r=>setTimeout(r,1500))]);
 catch(e){if(!e||e.code!=="declined")window.open(url,"_blank","noopener")}
 finally{b.disabled=false;b.innerHTML=lbl}}
 function ctc(from){const t=from&&P[from]?P[from].t:"";const subj=encodeURIComponent(t?"Портфель: "+t:"Портфель решений");
- return `<article class="prod ctc"><span class="pname">Обсудить${t?" · "+esc(t):""}</span><h3 class="val">Расскажите о задаче</h3><p>За одну встречу покажем, какие решения подойдут и с чего начать пилот.</p><div class="ctl"><span>Куат Абдрахманов</span><a href="tel:+77710228888">+7 771 022 88 88</a><a href="mailto:kuat@telematika.kz?subject=${subj}">kuat@telematika.kz</a></div><a class="wa" href="https://wa.me/77710228888?text=${encodeURIComponent(t?"Здравствуйте! Хочу обсудить: "+t:"Здравствуйте! Посмотрел портфель решений, хочу обсудить задачу.")}" target="_blank" rel="noopener">Написать в WhatsApp</a><div class="pact">${t?`<button class="pbtn" data-p="${from}"><span aria-hidden="true">←</span> Вернуться к решению</button>`:`<button class="pbtn" data-close>Продолжить изучение</button>`}</div></article>`}
+ return `<article class="prod ctc"><span class="pname">Обсудить${t?" · "+esc(t):""}</span><h3 class="val">Расскажите о задаче</h3><p>За одну встречу покажем, какие решения подойдут и с чего начать пилот.</p><div class="ctl"><span>Куат Абдрахманов</span><a href="tel:+77710228888">+7 771 022 88 88</a><a href="mailto:kuat@telematika.kz?subject=${subj}">kuat@telematika.kz</a></div><a class="pbtn pri ctc-mwa" href="https://wa.me/77710228888?text=${encodeURIComponent(t?"Здравствуйте! Хочу обсудить: "+t:"Здравствуйте! Посмотрел портфель решений, хочу обсудить задачу.")}" target="_blank" rel="noopener">Написать в WhatsApp</a><div class="pact">${t?`<button class="pbtn" data-p="${from}"><span aria-hidden="true">←</span> Вернуться к решению</button>`:`<button class="pbtn" data-close>Продолжить изучение</button>`}</div></article>`}
 function openC(from,btn){if(btn)lastBtn=btn;const m=document.getElementById("modal");m.querySelector(".mbody").innerHTML=ctc(from);m.querySelector(".mbox").classList.remove("wide");m.querySelector(".mbox").scrollTop=0;m.hidden=false;m.querySelector(".mclose").focus()}
 function closeP(){const m=document.getElementById("modal");m.hidden=true;if(lastBtn)lastBtn.focus()}
 function how(){return `<div class="screen"><div class="inner">
@@ -507,10 +515,9 @@ function how(){return `<div class="screen"><div class="inner">
  <div class="step hl"><span class="num">03</span><h3>Пилот</h3><p class="muted">Запускаем на одном участке и считаем эффект</p></div>
  <div class="step"><span class="num">04</span><h3>Внедрение</h3><p class="muted">Масштабируем, связываем с SAP, 1С и ERP, сопровождаем</p></div></div>
  </div></div>`}
-function contact(){return `<div class="screen dark"><div class="stripe"></div><div class="inner">
- <div class="grow"></div><div style="display:flex;flex-direction:column;gap:22px"><h1>Расскажите о задаче</h1>
- <p class="lead muted">За одну встречу покажем, какие решения подойдут и с чего начать пилот.</p></div>
- <div class="grow"></div><div class="actions ctl-row" style="gap:32px;font-size:20px"><span>Куат Абдрахманов</span><a href="tel:+77710228888" style="color:var(--accent);text-decoration:none">+7 771 022 88 88</a><a href="mailto:kuat@telematika.kz" style="color:inherit;text-decoration:none">kuat@telematika.kz</a><a class="wa" href="https://wa.me/77710228888?text=${encodeURIComponent("Здравствуйте! Посмотрел портфель решений, хочу обсудить задачу.")}" target="_blank" rel="noopener">Написать в WhatsApp</a></div></div></div>`}
+function contact(){const wa="https://wa.me/77710228888?text="+encodeURIComponent("Здравствуйте! Посмотрел портфель решений, хочу обсудить задачу.");return `<div class="screen dark"><div class="stripe"></div><div class="inner ctc-scr">
+ <div class="ctc-top"><h1>Расскажите о задаче</h1><p class="lead muted">За одну встречу покажем, какие решения подойдут и с чего начать пилот.</p></div>
+ <div class="ctc-box"><span class="ctc-who">Куат Абдрахманов</span><div class="ctc-row"><a class="ctc-l acc" href="tel:+77710228888">+7 771 022 88 88</a><a class="ctc-l" href="mailto:kuat@telematika.kz">kuat@telematika.kz</a><a class="btn solid ctc-wa" href="${wa}" target="_blank" rel="noopener">Написать в WhatsApp</a></div></div></div></div>`}
 app.addEventListener("click",e=>{if(e.target.closest("[data-back]")){goBack();return}const z=e.target.closest("[data-z]");if(z){selZ=+z.dataset.z;const {a}=cur();const y=window.scrollY;sec(a);window.scrollTo(0,y);const f=document.querySelector(`[data-z="${selZ}"]`);if(f)f.focus();return}const k=e.target.closest("[data-contact]");if(k){openC(k.dataset.contact,k);return}const c=e.target.closest("[data-p]");if(c){openP(c.dataset.p,c);return}const g=e.target.closest("[data-go]");if(g)go(g.dataset.go)});
 document.getElementById("modal").addEventListener("click",e=>{const d=e.target.closest("[data-doc]");if(d){getDoc(d);return}const k=e.target.closest("[data-contact]");if(k){openC(k.dataset.contact);return}const bp=e.target.closest(".mbody [data-p]");if(bp){openP(bp.dataset.p);return}if(e.target.closest("[data-close]")){closeP();return}const g=e.target.closest("[data-go]");if(g){closeP();go(g.dataset.go)}});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!document.getElementById("modal").hidden){closeP();return}if(e.key==="Escape"){const {v}=cur();go(v==="sec"?"menu":"menu")}});
