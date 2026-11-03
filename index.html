@@ -1,0 +1,519 @@
+<title>Портфель решений</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Onest:wght@400;500;600&display=swap">
+<style>
+/* Layout: интерактивная презентация на весь экран — обложка → кто мы → направления → раздел с продуктами */
+:root{
+  --bg:#F3F2ED; --card:#FBFAF6; --ink:#14181B; --muted:#4F5961; --line:#D9DBD4;
+  --dark:#14181B; --dark-2:#1F252A; --on-dark:#F3F2ED; --on-dark-muted:#A9B3BC;
+  --accent:#F2B300; --accent-ink:#14181B; --accent-text:#8A6A00;
+  --f-display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --f-body:"Onest",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111417; --card:#1A1F23; --ink:#ECEDE8; --muted:#A3ADB5; --line:#2C3338;
+  --dark:#0B0D0F; --dark-2:#1A1F23; --accent-text:#F2B300; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111417; --card:#1A1F23; --ink:#ECEDE8; --muted:#A3ADB5; --line:#2C3338;
+  --dark:#0B0D0F; --dark-2:#1A1F23; --accent-text:#F2B300; color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:18px;line-height:1.5;margin:0}
+.screen{min-height:100%;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px));padding-block:28px 40px;display:flex;flex-direction:column}
+.inner{width:100%;max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:28px;flex:1}
+.dark{background:var(--dark);color:var(--on-dark)}
+.dark .muted{color:var(--on-dark-muted)}
+.muted{color:var(--muted)}
+.back{font:600 22px var(--f-body);width:44px;height:44px;border-radius:999px;border:2px solid currentColor;background:transparent;color:inherit;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.back:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;min-height:44px}
+.brand{font-size:13px;letter-spacing:.16em;text-transform:uppercase;font-weight:600}
+.btn{font:600 16px var(--f-body);border-radius:999px;padding:12px 22px;border:2px solid currentColor;background:transparent;color:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.btn.solid{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.ghost{border-color:transparent;padding-inline:10px;opacity:.8}
+.btn:focus-visible,.tile:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.eyebrow{font-size:14px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--accent-text)}
+.dark .eyebrow{color:var(--accent)}
+h1,h2{font-family:var(--f-display);font-weight:700;line-height:1.05;margin:0;text-wrap:balance}
+h1{font-size:clamp(40px,7vw,96px)}
+h2{font-size:clamp(30px,4.4vw,58px)}
+h3{font-size:21px;margin:0;line-height:1.25}
+p{margin:0}
+.lead{font-size:clamp(18px,2vw,24px);max-width:56ch}
+.grow{flex:1}
+.cflow{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px;counter-reset:cf}
+.cflow li{counter-increment:cf;border:1.5px solid var(--on-dark-muted);color:var(--on-dark);border-radius:999px;padding:8px 14px;font-size:15px;font-weight:500}
+.cflow li::before{content:counter(cf) " · ";color:var(--accent)}
+.stripe{position:fixed;left:0;top:0;bottom:0;width:10px;background:var(--accent)}
+
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.tile{all:unset;cursor:pointer;display:flex;flex-direction:column;gap:10px;justify-content:space-between;min-height:220px;padding:24px;border-radius:14px;background:var(--card);border:1px solid var(--line);min-width:0}
+.tile .num{font-family:var(--f-display);font-size:15px;color:var(--accent-text)}
+.tile h3{font-family:var(--f-display);font-weight:500}
+.tile p{font-size:15px;color:var(--muted)}
+.tile .go{font-weight:600;font-size:15px}
+.tile .tt{display:flex;flex-direction:column;gap:10px}.tile .tw{font-size:17px;line-height:1.4;color:var(--ink)}
+.tile .tags{margin-top:6px}.tile{gap:24px}@media (max-width:640px){.tile{min-height:0}}
+.tags{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}.tags li{font-size:13px;line-height:1;padding:7px 10px;border-radius:999px;background:var(--bg);border:1px solid var(--line);color:var(--muted)}
+.tile.accent{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.tile.accent p,.tile.accent .num{color:var(--accent-ink)}
+@media (prefers-reduced-motion:no-preference){.tile{transition:transform .15s,border-color .15s}.tile:hover{transform:translateY(-3px);border-color:var(--ink)}}
+
+.sec-head{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:32px;align-items:end}
+@media (max-width:820px){.sec-head{grid-template-columns:1fr}}
+.does{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none}
+.does li{padding-left:22px;position:relative}
+.does li::before{content:"";position:absolute;left:0;top:.6em;width:10px;height:10px;background:var(--accent);border-radius:2px}
+.prods{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;align-items:stretch}
+.prod{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.prod p{font-size:16px;color:var(--muted)}
+.prod .pname{font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--muted)}
+.prod .val{font-family:var(--f-display);font-weight:600;font-size:23px;line-height:1.2;color:var(--ink);text-wrap:balance}
+.prod.key .pname{color:var(--on-dark-muted)}
+.prod.key .val{color:var(--accent)}
+.prod .fig{margin-top:auto;padding-top:10px;border-top:1px dashed var(--line);display:flex;gap:16px;flex-wrap:wrap}
+.prod .fig div{display:flex;flex-direction:column;min-width:0}
+.prod .fig strong{font-family:var(--f-display);font-size:24px;line-height:1.1;color:var(--accent-text)}
+.prod .fig span{font-size:13px;color:var(--muted);max-width:20ch}
+.prod.key{background:var(--dark-2);color:var(--on-dark);border-color:var(--dark-2)}
+.prod.key p,.prod.key .fig span{color:var(--on-dark-muted)}
+.prod.key .fig strong{color:var(--accent)}
+.prod.key .fig{border-color:#3A434A}
+.actions{display:flex;gap:12px;flex-wrap:wrap}
+.map{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:stretch}
+.marr{align-self:center;font-size:24px;color:var(--muted)}
+.node{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.node .nt{font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--muted)}
+.node .loss{font-family:var(--f-display);font-weight:600;font-size:18px;line-height:1.25;color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}
+.how{flex-basis:100%;font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent-text);padding-top:10px;border-top:1px dashed var(--line)}
+.nfig{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.nfig div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.nfig b{font-family:var(--f-display);font-size:20px;line-height:1.1;color:var(--accent-text)}
+.nfig span{font-size:12.5px;line-height:1.3;color:var(--muted)}
+.zones{display:grid;grid-template-columns:minmax(0,0.9fr) minmax(0,1.6fr);gap:16px;align-items:stretch}
+.zstack{display:grid}.zstack>.zpanel{grid-area:1/1}.zstack>.zpanel:not(.on){visibility:hidden}
+.zlist .zbtn{flex:1}
+.zlist{display:flex;flex-direction:column;gap:8px}
+.zbtn{all:unset;cursor:pointer;display:flex;align-items:center;gap:14px;padding:18px 20px;border-radius:12px;background:var(--card);border:1px solid var(--line)}
+.zbtn .zn{font-family:var(--f-display);font-size:14px;color:var(--muted)}
+.zbtn .zt{flex:1;font-family:var(--f-display);font-weight:600;font-size:20px}
+.zbtn .zar{opacity:.4}
+.zbtn.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.zbtn.on .zn,.zbtn.on .zar{color:var(--accent);opacity:1}
+.zbtn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.zpanel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.zloss{font-family:var(--f-display);font-weight:600;font-size:clamp(22px,2.4vw,30px);line-height:1.2}
+.zpanel .nfig b{font-size:26px}
+.zpanel .nfig span{font-size:14px}
+@media (max-width:760px){.zones{grid-template-columns:1fr}.zlist{flex-direction:row;overflow-x:auto}.zbtn{padding:12px 14px;flex:none}.zbtn .zt{font-size:16px}.zbtn .zar{display:none}}
+.ucards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.uc{all:unset;cursor:pointer;box-sizing:border-box;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.uc .pname{font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--muted)}
+.uc .uv{font-family:var(--f-display);font-weight:600;font-size:19px;line-height:1.25}
+.uc .uf{display:flex;flex-direction:column;gap:2px;margin-top:auto;padding-top:10px;border-top:1px dashed var(--line)}
+.uc .uf b{font-family:var(--f-display);font-size:24px;line-height:1.1;color:var(--accent-text)}
+.uc .uf span{font-size:13px;color:var(--muted)}
+.uc .ugo{font-weight:600;font-size:14px;margin-top:auto}
+.uc.key{background:var(--dark-2);color:var(--on-dark);border-color:var(--dark-2)}
+.uc.key .pname,.uc.key .uf span{color:var(--on-dark-muted)}.uc.key .uf b{color:var(--accent)}.uc.key .uf{border-color:#3A434A}
+.uc:focus-visible,.digbar:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+@media (prefers-reduced-motion:no-preference){.uc{transition:transform .15s,border-color .15s}.uc:hover{transform:translateY(-3px);border-color:var(--ink)}}
+.digbar{all:unset;cursor:pointer;box-sizing:border-box;background:var(--accent);color:var(--accent-ink);border-radius:14px;padding:18px 22px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:center;font-weight:600;font-size:17px}
+.goals{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.gc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.gc h3{font-family:var(--f-display);font-weight:600;font-size:23px;line-height:1.15}
+.gf{display:flex;flex-direction:column;gap:2px}.gf b{font-family:var(--f-display);font-size:30px;line-height:1.05;color:var(--accent-text)}.gf span{font-size:13.5px;color:var(--muted)}
+.gps{display:flex;flex-direction:column;gap:8px;margin-top:auto}
+.gps .how{padding-top:12px}
+.gchip{all:unset;cursor:pointer;box-sizing:border-box;display:flex;justify-content:space-between;align-items:center;gap:8px;border:1.5px solid var(--ink);border-radius:999px;padding:8px 14px;font-size:14px;font-weight:600}
+.gchip:hover{background:var(--ink);color:var(--bg)}
+.gchip:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.gc.key{background:var(--dark-2);color:var(--on-dark);border-color:var(--dark-2)}
+.gc.key .gf b,.gc.key .how{color:var(--accent)}.gc.key .gf span{color:var(--on-dark-muted)}.gc.key .how{border-color:#3A434A}
+.gc.key .gchip{border-color:var(--on-dark-muted)}.gc.key .gchip:hover{background:var(--on-dark);color:var(--dark-2)}
+.blk{scroll-snap-align:start}
+.blk>.screen{min-height:100vh;min-height:100svh;justify-content:center}
+@media (min-width:900px) and (min-height:640px){html{scroll-snap-type:y proximity}}
+.down{font-weight:600;color:var(--accent)}
+.bars2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.bar2{all:unset;cursor:pointer;box-sizing:border-box;border-radius:14px;padding:22px 24px;display:flex;flex-direction:column;gap:8px}
+.bar2 h3{font-family:var(--f-display);font-weight:600;font-size:21px;line-height:1.2}
+.bar2 .ugo{font-weight:600;font-size:15px;margin-top:6px}
+.bar2.y{background:var(--accent);color:var(--accent-ink)}
+.bar2.d{background:var(--dark-2);color:var(--on-dark)}.bar2.d span:not(.ugo){color:var(--on-dark-muted)}.bar2.d .ugo{color:var(--accent)}
+.bar2:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.land{--fd:var(--f-display);--fb:var(--f-body);--mut:var(--muted);--dk:var(--dark);--dk2:var(--dark-2);--ondk:var(--on-dark);--ondkm:var(--on-dark-muted);--acc:var(--accent);--acct:var(--accent-text);--ok:#2f6f4e;font:17px/1.5 var(--f-body);color:var(--ink);background:var(--bg);border-radius:16px;overflow:hidden}
+.mbox.wide{width:min(980px,100%)}
+.land .Lblk{padding:36px clamp(20px,4vw,48px);display:flex;flex-direction:column;gap:18px}
+.land .Lblk+.Lblk{border-top:1px solid var(--line)}
+.land .Lhero{background:var(--dk2);color:var(--ondk)}
+.land .Leb{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--acct)}
+.land .Lhero .Leb{color:var(--acc)}
+.land h1,.land h2{font-family:var(--fd);font-weight:700;line-height:1.08;margin:0;text-wrap:balance}
+.land h1{font-size:clamp(30px,4.6vw,50px)}
+.land h2{font-size:clamp(22px,2.8vw,30px)}
+.land h3{margin:0;font-size:18px;line-height:1.25}
+.land p{margin:0}
+.land .Llead{font-size:clamp(17px,1.8vw,20px);color:var(--ondkm);max-width:60ch}
+.land .Lstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-top:6px}
+.land .Lstat{border-top:1px solid #3A434A;padding-top:12px}
+.land .Lstat b{display:block;font-family:var(--fd);font-size:28px;color:var(--acc);line-height:1.1}
+.land .Lstat span{font-size:13.5px;color:var(--ondkm)}
+.land .Lcta{display:flex;gap:10px;flex-wrap:wrap}
+.land .Lbtn{font:600 16px var(--fb);border-radius:999px;padding:12px 22px;border:2px solid currentColor;background:transparent;color:inherit;cursor:pointer}
+.land .Lbtn.Ly{background:var(--acc);border-color:var(--acc);color:#14181B}
+.land .Lwho{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.land .Lwc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:6px}
+.land .Lwc p{color:var(--mut);font-size:15px}
+.land .Lfeats{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:12px}
+.land .Lf{display:flex;gap:14px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.land .Lf .Ln{font-family:var(--fd);color:var(--acct);font-size:15px;min-width:24px}
+.land .Lf p{color:var(--mut);font-size:15px;margin-top:4px}
+.land table{width:100%;border-collapse:collapse;font-size:15px}
+.land th,.land td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.land th{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);font-weight:700}
+.land td:nth-child(2){font-weight:600}
+.land td:nth-child(2)::before{content:"✓ ";color:var(--ok)}
+.land td:nth-child(3){color:var(--mut)}
+.land .Ltw{overflow-x:auto}
+.land .Lsteps{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+.land .Lst{border-top:4px solid var(--ink);padding-top:12px;display:flex;flex-direction:column;gap:6px}
+.land .Lst.Lhl{border-color:var(--acc)}
+.land .Lst b{font-family:var(--fd);color:var(--acct);font-size:15px}
+.land .Lst p{color:var(--mut);font-size:15px}
+.land .Llic{display:flex;gap:12px;flex-wrap:wrap}
+.land .Lpill{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;flex:1;min-width:220px}
+.land .Lpill p{color:var(--mut);font-size:14.5px;margin-top:4px}
+.land .Lquiet{background:var(--acc);color:#14181B;border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:4px}
+.land .Lend{background:var(--dk2);color:var(--ondk)}
+.land .Lend .Llead{color:var(--ondkm)}
+.land .Lnote{font-size:12.5px;color:var(--mut)}
+.land .Lflow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.land .Lfl{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.land .Lfl b{font-family:var(--fd);color:var(--acct);font-size:14px}
+.land .Lfl p{color:var(--mut);font-size:14px}
+.land .Lpain{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.land .Lpc{border-top:4px solid #c0392b;padding-top:12px;display:flex;flex-direction:column;gap:6px}
+.land .Lpc p{color:var(--mut);font-size:15px}
+.land .Lbig{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.land .Lbig div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.land .Lbig b{display:block;font-family:var(--fd);font-size:26px;color:var(--acct);line-height:1.1}
+.land .Lbig span{font-size:13.5px;color:var(--mut)}
+.land .Lflow{grid-template-columns:1fr}
+@media (max-width:820px){.land .Lflow{grid-template-columns:1fr}}
+.land .Lrisk{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:640px){.land .Lrisk{grid-template-columns:1fr}}
+.mnote{font-size:12.5px;color:var(--muted);max-width:110ch}
+.pchip{font:600 13px var(--f-body);border:1.5px solid var(--ink);background:transparent;color:var(--ink);border-radius:999px;padding:6px 11px;cursor:pointer;text-align:left}
+.pchip:hover{background:var(--ink);color:var(--bg)}
+.pchip:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.pts{list-style:none;margin:4px 0 0;padding:0;display:flex;flex-direction:column;gap:9px}
+.pts li{position:relative;padding-left:24px;font-size:16px;line-height:1.4}
+.pts li::before{content:"";position:absolute;left:2px;top:.38em;width:12px;height:7px;border-left:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(-45deg)}
+.mbox .fig{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px 28px;padding-top:16px}
+.mbox .fig span{max-width:none;font-size:14px;line-height:1.4;margin-top:4px}
+.pact{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.pbtn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:10px;border:1px solid currentColor;background:transparent;color:inherit;font:inherit;font-size:15px;font-weight:500;text-decoration:none;cursor:pointer}
+.pbtn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.pbtn:hover{opacity:.85}
+.pbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.psrc{font-size:12.5px;opacity:.7;margin:0}.psrc a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.modal{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.modal[hidden]{display:none}
+.mback{position:absolute;inset:0;background:rgba(10,12,14,.55)}
+.mbox{position:relative;width:min(720px,100%);max-height:100%;overflow:auto}
+.mbox .prod{padding:32px;border-radius:16px}
+.mbox .val{font-size:30px}
+.ctc .ctl{display:flex;flex-direction:column;gap:8px;font-size:20px;padding:6px 0 4px}.ctc .ctl a{color:inherit;font-weight:600;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:2px;text-underline-offset:4px;width:fit-content}
+.mclose{position:absolute;top:10px;right:10px;z-index:1;color:var(--on-dark-muted)}
+.mbox .prod:not(.key)+.mclose,.mbox:has(.prod:not(.key)) .mclose{color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.mbox{animation:pop .18s ease-out}@keyframes pop{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}}
+@media (max-width:1100px){.map{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.marr{display:none}}
+@media (max-width:560px){.map{grid-template-columns:1fr}}
+.dig{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:24px;align-items:center;background:var(--accent);color:var(--accent-ink);border-radius:14px;padding:26px 28px}
+.dig .eyebrow{color:var(--accent-ink);opacity:.75}
+.dig h3{font-family:var(--f-display);font-weight:600;font-size:26px;line-height:1.2;margin-top:8px}
+.dig p{font-size:17px}
+.svc{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px;counter-reset:st}
+.svc li{counter-increment:st}
+.svc li::before{content:counter(st) " · ";opacity:.7}
+.svc li{font-size:16px;font-weight:600;background:var(--accent-ink);color:var(--accent);padding:8px 14px;border-radius:999px}
+@media (max-width:820px){.dig{grid-template-columns:1fr}}
+.grp{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;border-top:2px solid var(--ink);padding-top:14px;margin-top:10px}
+.grp h3{font-family:var(--f-display);font-weight:500;font-size:22px}
+.grp span{font-size:15px;color:var(--muted)}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.step{border-top:4px solid var(--ink);padding-top:16px;display:flex;flex-direction:column;gap:8px}
+.step.hl{border-color:var(--accent)}
+.step .num{font-family:var(--f-display);color:var(--accent-text)}
+
+/* Единая шкала шрифтов: Unbounded — только заголовки и цифры, длинные фразы — Onest */
+h2{font-size:clamp(28px,3.2vw,42px)}
+.zbtn .zt{font-size:17px;font-weight:500}
+.zloss{font-family:var(--f-body);font-weight:600;font-size:clamp(20px,1.9vw,26px);line-height:1.3}
+.nfig b,.zpanel .nfig b,.gf b,.uc .uf b,.prod .fig strong{font-family:var(--f-display);font-weight:600;font-size:26px}
+.tile h3{font-size:19px}
+.gc h3{font-size:20px}
+.uc .uv,.prod .val{font-family:var(--f-body);font-weight:600;font-size:20px;line-height:1.3}
+.mbox .val{font-size:24px}
+.bar2 h3{font-size:19px}
+.step h3,.st h3{font-size:18px}
+.land h1{font-size:clamp(28px,3.6vw,40px)}
+.land h2{font-size:clamp(20px,2.4vw,28px)}
+.land .Lstat b,.land .Lbig b{font-size:24px}
+@media (max-width:760px){.zbtn .zt{font-size:15px}}
+.gchip>span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.gchip{padding:9px 14px}
+.goals{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:1299px){.goals{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.goals{grid-template-columns:1fr}}
+.gps{padding-top:14px;border-top:1px dashed var(--line)}
+.gc.key .gps{border-color:#3A434A}
+
+/* Бережная палитра: мягче контраст, приглушённый акцент, выделенные карточки — тёплые светлые */
+:root:not([data-theme="dark"]){--ink:#262C30;--muted:#5C656C;--line:#E2E1DA;--card:#FCFBF8;--dark:#2A3136;--dark-2:#333B41;--on-dark:#F1EFE9;--on-dark-muted:#B9C0C6;--accent:#E6B94E;--accent-text:#8F7128;--soft:#F4ECD8;--soft-line:#E8DCBC}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--soft:#2B2A24;--soft-line:#4A4433}}
+:root[data-theme="dark"]{--soft:#2B2A24;--soft-line:#4A4433}
+.gc.key{background:var(--soft);color:var(--ink);border-color:var(--soft-line)}
+.gc.key .gf b{color:var(--accent-text)}.gc.key .gf span{color:var(--muted)}
+.gc.key .gps{border-color:var(--soft-line)}
+.gc.key .gchip{border-color:var(--ink)}.gc.key .gchip:hover{background:var(--ink);color:var(--bg)}
+.prod.key{background:var(--soft);color:var(--ink);border-color:var(--soft-line)}
+.prod.key .pname,.prod.key p,.prod.key .fig span{color:var(--muted)}.prod.key .val{color:var(--ink)}.prod.key .fig strong{color:var(--accent-text)}.prod.key .fig{border-color:var(--soft-line)}
+.mbox .prod.key+.mclose,.mbox:has(.prod.key) .mclose{color:var(--muted)}
+.zbtn.on{background:var(--soft);color:var(--ink);border-color:var(--accent)}
+.zbtn.on .zn,.zbtn.on .zar{color:var(--accent-text)}
+.bar2.d{background:var(--soft);color:var(--ink);border:1px solid var(--soft-line)}.bar2.d span:not(.ugo){color:var(--muted)}.bar2.d .ugo{color:var(--accent-text)}
+.gchip,.pchip{border-width:1px}
+
+/* Полировка по unslop (Damir Sokolovsky, CC BY 4.0): обычный регистр подписей, иерархия размером, а не жирностью, радиусы по размеру, ритм карточек */
+.eyebrow,.how,.nt,.pname,.uc .pname,.land .Leb,.zpanel .nt,.grp span{text-transform:none!important;letter-spacing:0!important}
+.eyebrow,.land .Leb{font-size:15px;font-weight:500}
+.how{font-size:13px;font-weight:500}
+.pname,.uc .pname{font-size:14px;font-weight:500}
+h1,h2,.land h1,.land h2{font-weight:500}
+h1{letter-spacing:-.01em}
+.gc h3,.tile h3,.zbtn .zt,.bar2 h3,.grp h3{font-weight:500}
+.nfig b,.zpanel .nfig b,.gf b,.uc .uf b,.prod .fig strong,.land .Lstat b,.land .Lbig b,.step .num,.tile .num{font-weight:500;font-variant-numeric:tabular-nums}
+.zloss,.uc .uv,.prod .val{font-weight:500}
+.btn{border-radius:12px}
+.gchip,.pchip{border-radius:10px}
+.zbtn{border-radius:12px}
+.gc,.tile,.zpanel,.prod,.bar2{border-radius:16px}
+.goals{grid-template-columns:1.15fr 1fr 1fr 1fr}
+.gchip{padding:9px 12px;gap:6px}
+@media (max-width:1299px){.goals{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.goals{grid-template-columns:1fr}}
+.gc.key h3{font-size:24px}.gc.key .gf b{font-size:34px}
+
+/* unslop, шаг 2: тёплая нейтральная шкала из токенов скилла, без декоративной полосы, один шрифт для интерфейса и заголовков */
+:root:not([data-theme="dark"]){
+ --bg:#F7F4EE;--card:#FDFBF7;--ink:#1F1B16;--muted:#5E554A;--line:rgba(31,27,22,.09);
+ --dark:#1C1A18;--dark-2:#262421;--on-dark:#EFE9DE;--on-dark-muted:#AAA398;
+ --accent:#E2AE3B;--accent-text:#8A6416;--accent-ink:#1F1B16;--soft:#EFE9DF;--soft-line:rgba(31,27,22,.10);
+ --f-display:"Onest",system-ui,-apple-system,"Segoe UI",sans-serif}
+.stripe{display:none!important}
+h1{font-weight:500;letter-spacing:-.03em;line-height:1.04}
+h2{font-weight:500;letter-spacing:-.02em;line-height:1.1;font-size:clamp(30px,3.4vw,44px)}
+.land h1{letter-spacing:-.02em}
+.gc h3,.tile h3,.bar2 h3{font-size:21px;letter-spacing:-.01em}
+.gc.key h3{font-size:24px}
+.zbtn .zt{font-size:18px}
+.gf b,.nfig b,.zpanel .nfig b,.uc .uf b,.prod .fig strong,.land .Lstat b,.land .Lbig b{font-size:30px;letter-spacing:-.01em}
+.gc.key .gf b{font-size:36px}
+.btn{border-radius:10px;min-height:44px}
+.gc,.tile,.zpanel,.prod,.bar2{box-shadow:0 1px 2px rgba(0,0,0,.04)}
+
+/* Бейдж «Топ» на рамке кнопки */
+.topb{display:inline-block;font:600 11px/1.4 var(--f-body);background:var(--accent);color:#1F1B16;border-radius:5px;padding:1px 7px;letter-spacing:0;text-transform:none;vertical-align:middle}
+.gchip,.pchip{position:relative}
+.gchip .topb,.pchip .topb{position:absolute;top:-9px;right:12px;box-shadow:0 0 0 3px var(--card)}
+.gc.key .gchip .topb{box-shadow:0 0 0 3px var(--soft)}
+.gps{gap:12px}
+.zpanel .chips{row-gap:14px;column-gap:8px}
+.pchip{padding:8px 12px}
+.pname .topb,.Leb .topb,.land .Leb .topb{margin-left:8px}
+
+/* Кто мы + как работаем: один экран, текст слева, шаги списком справа, без цветных полос */
+.abt{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:48px 64px;align-items:center;align-content:center}
+.abt-l,.abt-r{display:flex;flex-direction:column;gap:20px}
+.flow{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.flow li{display:grid;grid-template-columns:32px minmax(0,1fr);gap:12px;padding:18px 0;border-bottom:1px solid var(--line)}
+.flow .fn{font-size:15px;color:var(--muted);font-variant-numeric:tabular-nums;padding-top:2px}
+.flow h3{font-size:18px;font-weight:500;margin:0 0 4px}
+.flow p{margin:0;color:var(--muted);font-size:15px}
+@media (max-width:900px){.abt{grid-template-columns:1fr;gap:40px}}
+
+/* Строка доверия: названия клиентов разработчиков как спокойные «логотипы» */
+.logos{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));align-items:center;justify-items:center;gap:26px 26px;list-style:none;margin:0;padding:0}
+.logos li{grid-column:span 2;width:100%;justify-content:center}
+.logos li:nth-child(6){grid-column:2/span 2}
+.logos li{display:flex;align-items:center}
+.logos img{height:26px;width:auto;max-width:100%;object-fit:contain;filter:grayscale(1);opacity:.7;transition:filter .2s,opacity .2s}
+.logos img:hover{filter:none;opacity:1}
+@media (max-width:620px){.logos{grid-template-columns:repeat(6,minmax(0,1fr));gap:20px 10px}.logos li{grid-column:span 2}.logos li:nth-child(6){grid-column:auto/span 2}.logos li:nth-child(4){grid-column:2/span 2}.logos li:nth-child(9){grid-column:3/span 2}.logos img{height:26px;max-width:100%}}
+.trust{margin-top:8px;display:flex;flex-direction:column;gap:14px;padding-top:28px;border-top:1px solid var(--line)}
+.trust-t{font-size:14px;color:var(--muted)}
+
+
+@media (max-width:900px){}
+.cov-k{font-size:19px;line-height:1.4;color:var(--on-dark);font-weight:500;opacity:.9}
+.hl-acc{color:var(--accent)}
+.cov-lead{max-width:none!important;width:min(100%,62em);text-wrap:balance}
+@media (max-width:900px){.cov-br{display:none}}
+.down{color:var(--on-dark)!important;font-size:16px;font-weight:500;opacity:.85}
+</style>
+
+<div id="app"></div>
+<div id="modal" class="modal" hidden role="dialog" aria-modal="true" aria-label="Продукт"><div class="mback" data-close></div><div class="mbox"><button class="mclose btn ghost" data-close aria-label="Закрыть">✕</button><div class="mbody"></div></div></div>
+
+<script>
+/* Направления: что делаем + продукты */
+const S={
+ ind:{n:"01",t:"Промышленность",for:"Горнодобыча, металлургия, производство",what:"Остановим утечку денег — от шахты до склада",
+  does:["Считаем людей, технику и выработку точно, без приписок","Предупреждаем аварии и поломки до остановки производства","Наводим порядок в учёте металла, запчастей и спецодежды"],
+  p:["staff","mine","vibro","stock","rfid","video","vtc","digital"],
+  map:{title:"Остановим утечку денег — от шахты до склада",
+   note:"* Данные разработчиков решений и наших обследований. ¹ SPARETECH, опрос 300 производственных компаний, 2025. ² Verdantis, опрос ~1900 руководителей.",
+   nodes:[
+   ["Рудник и шахта","Наверху не видно, кто реально в шахте, в чём он и в безопасности ли",["staff","mine","rfid"],[["до 150 млн ₸","в год теряет крупная компания на «мёртвых душах»*"],["0 тонн","добычи, пока шахта закрыта по предписанию за нарушения*"]]],
+   ["Производство","Внезапные поломки останавливают производство, металл и взрывчатка уходят на сторону",["vibro","metal","blast","video","power"],[["от 3 млн ₸","в час стоит внеплановая остановка оборудования*"],["100 кг","земли вместо руды могут приписать на каждую тонну*"]]],
+   ["Склады","Запчасти покупаются повторно, хотя уже лежат на складе",["stock"],[["22%","запчастей лежат без движения больше 5 лет¹"],["5–7%","закупок — повторная покупка того, что уже есть²"]]]]},
+  g:[["Рудник и шахта","Люди, допуск и безопасность под землёй",["staff","mine","rfid"]],["Производство","Оборудование, металл и энергия",["vibro","metal","blast","video","power"]],["Склады и логистика","Запчасти, ТМЦ и техника",["stock","vtc"]],["Для всего предприятия","Если задачу поставили сверху",["digital"]]]},
+ gov:{n:"02",t:"Госсектор и города",for:"Акиматы, ведомства, больницы, коммунальные службы",what:"Город, где жителям удобно и безопасно",
+  does:["Делаем городские и госуслуги быстрее для людей","Собираем данные с камер и приборов в одно окно","Помогаем выполнить поручения по цифровизации"],
+  p:["queue","kupol","meter","ambulance","navigo","digital"],
+  map:{title:"Город, где жителям удобно и безопасно",
+   note:"¹ Wavetec, кейс больницы Almoosa, Саудовская Аравия. ² Qwaiting, кейс Fullerton Health, Сингапур. ³ Данные центров скорой помощи, I квартал 2026 (Informburo). ⁴ Inform.kz, 2025.",
+   nodes:[
+   ["Сервисы для жителей","Люди часами ждут в очередях и ищут нужный кабинет",["queue","navigo"],[["в 6–9 раз","меньше ждут пациенты: 5 минут вместо 30–45¹"],["на 40%","сократилось ожидание в сети медцентров²"]]],
+   ["Безопасность и скорая","О происшествии узнают по записи, а скорая теряет минуты в пробках и дворах",["kupol","ambulance"],[["7,4%","вызовов скорой в Астане — с опозданием³"],["10 минут","норматив доезда на самые срочные вызовы³"]]],
+   ["ЖКХ и ресурсы","Показания собирают вручную, начисления расходятся с фактом, изношенные сети теряют воду",["meter"],[["39%","сетей водоснабжения в Казахстане изношены⁴"]]]]}}
+};
+/* Продукты: название, описание, цифры; key — выделенная карточка */
+const P={
+ staff:{t:"Учёт персонала и подрядчиков",v:"Зарплата и оплата подрядчикам — только за реальных людей, технику и пройденные метры",d:"На входе карта и ладонь, лидар раз в неделю меряет проходку. Подрядчиков пускают только по согласованной заявке, а акты и оплаты сверяются с фактическим присутствием. Табель и выработка сами уходят в SAP, работает поверх вашего СКУД.",f:[["до 150 млн ₸","в год экономии: зарплата идёт только тем, кто реально на объекте¹"],["в 2–3 раза","быстрее оформляются заявки подрядчиков¹"]],key:1},
+ mine:{t:"Безопасность горных работ",v:"Шахта работает без остановок, добыча идёт по плану",d:"По нормам МЧС: связь, позиционирование людей, газоанализаторы и телеметрия техники под ключ — всё на одном экране диспетчера.",f:[]},
+ vibro:{t:"Диагностика оборудования",v:"Производство работает без внезапных остановок",d:"Датчики на узлах предупреждают о поломке заранее: деталь меняют вовремя, и на запчасти уходит меньше денег.",f:[["2–4 нед.","предупреждение до отказа"],["6–12 мес.","окупаемость"]],key:1},
+ stock:{t:"Учёт ТМЦ и запчастей",v:"Сначала в работу идёт то, что уже есть на складе",d:"Одна камера считывает все метки в кадре разом и показывает, где лежит каждая позиция. Данные сразу уходят в 1С, SAP и складскую систему.",f:[]},
+ rfid:{t:"Учёт спецодежды",v:"Каждая единица спецодежды на учёте, закупки — по реальной потребности",d:"Каждая спецовка и пара перчаток на учёте: от выдачи до списания и переработки. Метка работает как пропуск, интеграция с SAP.",f:[]},
+ video:{t:"Видеоаналитика",v:"Нарушения видно сразу, в момент события",d:"Система сама разбирает видео с установленных камер и сразу отправляет события ответственным.",f:[["470","каналов в пилоте на заводах автопроизводителя"]]},
+ vtc:{t:"Учёт автомобилей от завода до клиента",v:"Видно каждую машину и каждый расход на ней",d:"Перевозки до дилера, GPS-мониторинг, сервис и история машины, приложение для владельца.",f:[]},
+ digital:{t:"Цифровизация под ключ",v:"Цифровизация с эффектом, который видно в цифрах",d:"Есть задача по цифровизации и ИИ сверху? Обследуем процессы, подбираем решения, запускаем пилот и считаем эффект в цифрах.",f:[]},
+ queue:{t:"Электронная очередь",v:"Пациенты проходят быстро, зал ожидания свободен",d:"Очередь для больниц на математической модели: система сама распределяет поток пациентов по специалистам, чтобы никто не простаивал.",f:[]},
+ kupol:{t:"Видеоаналитика для безопасности",v:"Реакция на событие сразу, в момент тревоги",d:"Система для МВД и служб безопасности города: события со всех камер и систем видеоаналитики в одном окне, уведомления сразу уходят дежурным по регламенту.",f:[]},
+ meter:{t:"Учёт показаний и биллинг",v:"Начисления точно по факту, без ручного сбора показаний",d:"Биллинг для коммунальных служб: показания со всех приборов учёта и смежных систем собираются в одном месте, начисления формируются автоматически.",f:[]},
+ ambulance:{t:"Мониторинг скорой помощи",v:"Бригада доезжает быстрее и работает безопаснее",d:"Система SkyTrack следит за состоянием водителя, подсказывает бригаде, как оказывать помощь, и пишет видео с камер вперёд и в салон.",f:[["2,5 года","работает на скорой в Карагандинской области"],["26","машин скорой готовятся к оснащению"]]},
+ navigo:{t:"Навигация внутри зданий",v:"Посетители сами находят нужный кабинет",d:"Маршрут до нужного кабинета или гейта прямо внутри здания: больницы, ТЦ, аэропорты, вокзалы.",f:[]},
+ bath:{t:"Платформа для бань, СПА и клубов",v:"Каждый гость тратит больше: приложение само предлагает допуслуги",d:"Мобильное приложение для гостей и CRM для банного или СПА-комплекса. ИИ подсказывает гостю, какие процедуры ему сейчас подойдут, и продаёт их прямо в приложении.",f:[]},
+ speech:{t:"Голосовая база знаний",v:"Знания компании хранятся в общей базе и остаются с компанией",d:"Всё, о чём договорились на встречах, в звонках и голосовых, само складывается в единую базу знаний: всё сохраняется, а каждая задача делается один раз.",f:[]},
+ kfo:{t:"Отчётность холдинга в 1С",v:"До 11 млн ₸ в год экономии на отчётности холдинга",d:"Отчётность по МСФО для всех компаний холдинга собирается прямо из 1С, без Excel и переписки. Подходит и отдельной компании, которая сдаёт пакет в Самрук-Казына или другой фонд.",f:[]},
+ dev:{t:"Разработка под задачу",v:"Своё решение под вашу задачу",d:"Личные кабинеты для клиентов, внутренние порталы, сайты и приложения под ваши процессы: от проектирования до запуска и поддержки.",f:[]},
+ web:{t:"Сайты",v:"Сайт, который приносит заявки",d:"Дизайн и разработка сайта под ваши продажи: понятная подача, формы заявок и аналитика.",f:[]},
+ installment:{t:"Небанковская рассрочка",v:"Больше продаж и денег: клиент покупает сейчас, а платит частями",d:"Рассрочка для ваших клиентов — клиник, магазинов, сервисов и любого бизнеса, подключённая к вашим продажам.",f:[]},
+ dlp:{t:"Защита от утечек (DLP)",v:"Конфиденциальные данные под полным контролем",d:"Лёгкий агент с ИИ сам находит утечку и сразу даёт отчёт, видит Telegram и WhatsApp. Ставится за полчаса на Windows, Linux и macOS.",f:[],key:1},
+ simbase:{t:"Автоматизация процессов",v:"Всё, что держится на звонках и напоминаниях, теперь работает само",d:"Поручения, согласования, документы и сроки идут по маршруту в одной системе. Работа меньше зависит от конкретных людей.",f:[]},
+ tender:{t:"Электронные закупки",v:"До 23% экономии на каждой закупке",d:"Больше поставщиков на каждую заявку, все цены прозрачны и сразу попадают в бухгалтерию и на склад. Договоры с подписью ЭЦП.",f:[]},
+ onec:{t:"Порядок в 1С",v:"Бухгалтерия делает каждую операцию один раз",d:"Разбираем учёт в группе компаний, наводим порядок в 1С и убираем двойной ввод.",f:[]},
+ blast:{t:"Учёт взрывчатки",v:"Каждый заряд взрывчатки на учёте до самого подрыва",d:"Каждый заряд на учёте, а подрыв срабатывает только по отпечатку пальца ответственного.",f:[]},
+ metal:{t:"Учёт металла",v:"Каждая тонна металла на учёте от руды до готового продукта",d:"Весы, датчики и научные формулы на каждом переделе показывают, сколько металла должно было выйти и сколько вышло.",f:[]},
+ power:{t:"Бесперебойное питание",v:"Производство работает даже при сбое питания",d:"ИБП и дизель-генераторы от партнёрского завода в Алматы.",f:[]},
+ it:{t:"IT-оборудование с отсрочкой",v:"Оборудование сейчас, оплата через 90 дней",d:"Серверы, сеть, средства информационной безопасности и лицензии — без заморозки бюджета.",f:[["90 дней","отсрочка платежа"],["до 10 млрд ₸","финансирование"]]}
+};
+const app=document.getElementById("app");
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const BR=()=>cur().v==="cover"?"<span></span>":'<button class="btn ghost" data-back>← Назад</button>';
+const bar=b=>`<div class="bar">${BR()}<div>${b||""}</div></div>`;
+const cur=()=>{const [v,a]=(location.hash||"#cover").slice(1).split("-");return {v,a}};
+const go=h=>{location.hash=h};
+const BLOCKS=["cover","menu","about","contact"];
+let lastV=null,homeY=null;
+function render(){const {v,a}=cur();const prev=lastV;lastV=v;
+ if(v==="sec"&&S[a]){if(prev!=="sec"&&document.querySelector(".home"))homeY=window.scrollY;window.scrollTo(0,0);return sec(a)}
+ app.innerHTML=`<div class="home">${[cover(),menu(),about(),contact()].map((h,i)=>`<section class="blk" id="b-${BLOCKS[i]}">${h}</section>`).join("")}</div>`;
+ if(prev==="sec"&&homeY!==null){const y=homeY;homeY=null;requestAnimationFrame(()=>window.scrollTo({top:y,behavior:"instant"}));return}
+ const el=document.getElementById("b-"+v); if(el&&v!=="cover") el.scrollIntoView(); else window.scrollTo(0,0);}
+function cover(){return `<div class="screen dark"><div class="stripe"></div><div class="inner">
+ <div class="grow"></div><div style="display:flex;flex-direction:column;gap:22px">
+ <span class="cov-k">Технологический дистрибьютор</span>
+ <h1 class="hl-acc">Цифровизация, которая окупается</h1>
+ <p class="lead muted cov-lead">Внедряем технологии, которые сокращают потери и возвращают компании деньги.<br class="cov-br"> Работаем с промышленностью, госсектором и бизнесом любого масштаба.</p></div>
+ <div class="grow"></div><span class="down">↓ Листайте вниз</span></div></div>`}
+function about(){return `<div class="screen"><div class="inner abt">
+ <div class="abt-l"><span class="eyebrow">Кто мы</span><h2>Технологический дистрибьютор с собственным исследовательским центром</h2>
+ <p class="lead muted">Исследуем, где предприятия и города теряют деньги и время, проверяем технологии на реальных объектах и поставляем только те, что сработали — с пилотом, внедрением и поддержкой.</p><div class="trust"><ul class="logos" aria-label="Наши решения работают у"><li><img src="logos/baiterek.png" alt="Холдинг «Байтерек»" loading="lazy"></li><li><img src="logos/qazaqgaz.png" alt="QazaqGaz" loading="lazy"></li><li><img style="height:22px" src="logos/ica.png" alt="Intergas Central Asia" loading="lazy"></li><li><img src="logos/kase.png" alt="Казахстанская фондовая биржа" loading="lazy"></li><li><img src="logos/damu.png" alt="Фонд «Даму»" loading="lazy"></li><li><img src="logos/otbasy.png" alt="Отбасы банк" loading="lazy"></li><li><img src="logos/nitec.png" alt="НИТ" loading="lazy"></li><li><img src="logos/kazengineering.png" alt="Kazakhstan Engineering" loading="lazy"></li><li><img style="height:36px" src="logos/kazagrofinance.png" alt="КазАгроФинанс" loading="lazy"></li></ul></div></div>
+ <div class="abt-r"><span class="eyebrow">Как работаем</span>
+ <ol class="flow">
+ <li><span class="fn">1</span><div><h3>Встреча</h3><p>Разбираем задачу и выбираем, с чего начать</p></div></li>
+ <li><span class="fn">2</span><div><h3>Обследование</h3><p>Смотрим процессы и системы на месте, готовим предложение</p></div></li>
+ <li><span class="fn">3</span><div><h3>Пилот</h3><p>Запускаем на одном участке и считаем эффект в деньгах</p></div></li>
+ <li><span class="fn">4</span><div><h3>Внедрение</h3><p>Масштабируем, связываем с SAP, 1С и ERP, сопровождаем</p></div></li>
+ </ol></div>
+ 
+ </div></div>`}
+const GOALS=[["Данные под защитой", "60 млн ₸", "хищений нашла система у одного клиента из малого бизнеса", ["dlp"], 1], ["Процессы работают сами", "до 30%", "ниже операционные расходы¹", ["speech", "simbase", "kfo"]], ["Больше продаж", "в 2 раза", "выше средний чек²", ["installment"]], ["Дешевле закупки", "до 23%", "экономии, когда за заказ борются все поставщики рынка³", ["tender"]]];
+function gcard([t,n,l,ids,dk]){return `<div class="gc${dk?" key":""}"><h3>${esc(t)}</h3><div class="gf"><b>${esc(n)}</b><span>${esc(l)}</span></div><div class="gps">${ids.map(id=>`<button class="gchip" data-p="${id}"><span>${esc(P[id].t)}${fire(id)}</span><span aria-hidden="true">→</span></button>`).join("")}</div></div>`}
+const tileH=(t,w,f,a)=>`<button class="tile" ${a}><div class="tt"><h3>${esc(t)}</h3><p class="tw">${esc(w)}</p><ul class="tags">${f.split(/,\s*/).map(x=>`<li>${esc(x[0].toUpperCase()+x.slice(1))}</li>`).join("")}</ul></div><span class="go">Открыть →</span></button>`;
+function menu(){return `<div class="screen"><div class="inner">
+ <h2>Наши решения</h2>
+ <span class="eyebrow">Для любой компании</span>
+ <div class="goals">${GOALS.map(gcard).join("")}</div>
+ <p class="mnote">¹ Gartner: автоматизация вместе с перестройкой процессов, оценка 2021. ² Kaspi, справка для продавцов: покупка в рассрочку против оплаты своими деньгами. ³ Самрук-Казына, итоги закупок 2020 (Forbes.kz).</p>
+ <span class="eyebrow" style="margin-top:10px">Решения для отраслей</span>
+ <div class="tiles">${["ind","gov"].map(k=>tileH(S[k].t,S[k].what,S[k].for,`data-go="sec-${k}"`)).join("")}${tileH("Бани, СПА и клубы","Больше записей, допродаж и постоянных гостей","Бани, СПА, спортклубы",`data-p="bath"`)}</div>
+ <div class="bars2"><button class="bar2 y" data-p="digital"><h3>Ищете, с чего начать?</h3><span>Проведём обследование процессов и найдём, где теряются деньги</span><span class="ugo">Подробнее →</span></button><button class="bar2 d" data-p="dev"><h3>Нужно своё решение?</h3><span>Разработаем под ваши процессы: личные кабинеты, порталы, сайты и приложения</span><span class="ugo">Подробнее →</span></button></div>
+ </div></div>`}
+function sec(k){const s=S[k];
+ app.innerHTML=`<div class="screen"><div class="inner">${bar()}
+ <div style="display:flex;flex-direction:column;gap:14px"><span class="eyebrow">${s.n} · ${esc(s.for)}</span><h2>${esc(s.map?s.map.title:s.t)}</h2></div>
+ ${s.map?mapView(k):`<div class="prods">${s.p.filter(i=>i!=="digital").map(card).join("")}</div>`}
+ <div class="grow"></div><div class="actions"><button class="btn" data-go="menu">← Направления</button><button class="btn solid" data-contact="">Обсудить</button></div></div></div>`}
+const TOP=new Set(["dlp","speech","staff","stock"]);
+const fire=id=>TOP.has(id)?'<span class="topb">Топ</span>':"";
+function card(id){const p=P[id],x=X[id]||{},f=x.f||p.f;return `<article class="prod${p.key?" key":""}"><span class="pname">${esc(p.t)}${fire(id)}</span><h3 class="val">${esc(p.v||p.t)}</h3><p>${esc(x.lead||p.d)}</p>${x.pts?`<ul class="pts">${x.pts.map(t=>`<li>${esc(t)}</li>`).join("")}</ul>`:""}${f.length?`<div class="fig">${f.map(([n,l])=>`<div><strong>${esc(n)}</strong><span>${esc(l)}</span></div>`).join("")}</div>`:""}<div class="pact">${x.doc?`<button class="pbtn pri" data-doc="${x.doc}" data-fn="${esc(p.t)}.pdf">Презентация <span aria-hidden="true">↓</span></button>`:""}${x.site?`<a class="pbtn" href="${x.site}" target="_blank" rel="noopener">Сайт <span aria-hidden="true">↗</span></a>`:""}<button class="pbtn ${x.doc?"":"pri"}" data-contact="${id}">Обсудить <span aria-hidden="true">→</span></button></div>${x.srcl?`<p class="psrc">${x.srcl.map(([t,u])=>`<a href="${u}" target="_blank" rel="noopener">${esc(t)}</a>`).join(". ")}.</p>`:""}${x.src?`<p class="psrc">${esc(x.src)}</p>`:""}</article>`}
+let selP=null;
+let selZ=0;
+function mapView(k){const m=S[k].map; if(selZ>=m.nodes.length) selZ=0;
+ const panel=([t,loss,ids,figs],i)=>`<div class="zpanel${i===selZ?" on":""}" role="tabpanel" ${i===selZ?"":'aria-hidden="true"'}><span class="nt">${esc(t)}</span><p class="zloss">${esc(loss)}</p>${figs?`<div class="nfig">${figs.map(([n,l])=>`<div><b>${esc(n)}</b><span>${esc(l)}</span></div>`).join("")}</div>`:""}<div class="chips"><span class="how">Как решаем</span>${ids.map(id=>`<button class="pchip" data-p="${id}"${i===selZ?"":' tabindex="-1"'}>${esc(P[id].t)}${fire(id)}</button>`).join("")}</div></div>`;
+ return `<div class="zones"><div class="zlist" role="tablist">${m.nodes.map(([zt],i)=>`<button class="zbtn${i===selZ?" on":""}" role="tab" aria-selected="${i===selZ}" data-z="${i}"><span class="zn">0${i+1}</span><span class="zt">${esc(zt)}</span><span class="zar" aria-hidden="true">→</span></button>`).join("")}</div>
+ <div class="zstack">${m.nodes.map(panel).join("")}</div></div>
+ ${m.note?`<p class="mnote">${esc(m.note)}</p>`:""}`}
+const X={"staff": {"src": "¹ Оценка разработчика.", "pts": ["Проход по венам ладони за 0,3 секунды: проходит только сам сотрудник", "Подрядчик попадает на объект только по согласованной заявке", "Акты и оплаты сверяются с фактическим присутствием", "Табель и выработка сами уходят в SAP"], "doc": "docs/biometriya-ladoni.pdf"}, "mine": {"f": [["в 6 раз", "дешевле оценки пришлось продать бизнес после аварии на шахте¹"], ["0 тонн", "добычи, пока шахта закрыта по предписанию за нарушения безопасности²"]], "srcl": [["¹ Оценка $1,8 млрд, продажа за $286 млн — GMK Center, 2023", "https://gmk.center/en/news/arcelormittal-sold-assets-in-kazakhstan-for-286-million/"]], "src": "² Данные разработчика.", "pts": ["Связь под землёй на любом участке шахты", "Диспетчер видит, сколько людей в шахте и где каждый", "Газоанализаторы сразу дают сигнал уходить и включают вентиляцию", "Телеметрия техники: где машина, расход топлива, поломки", "Шахта проходит проверки МЧС и работает дальше", "Внедряет команда, которая сама работала в шахтах"], "site": "https://harddev.kz/ru"}, "vibro": {"f": [["млрд ₸", "теряет комбинат, если встанет из-за поломки¹"], ["6–12 месяцев", "окупаемость системы¹"]], "src": "¹ Данные разработчика.", "pts": ["Датчики предупреждают о поломке за 2–4 недели до отказа", "Цифровой журнал ТО: кто, когда и что обслуживал", "Деталь меняют точно вовремя, по её реальному состоянию"], "doc": "docs/vibrodiagnostika.pdf", "site": "https://harddev.kz/ru"}, "stock": {"doc": "docs/uchet-tmc-markirovka.pdf", "pts": ["Инвентаризация идёт постоянно, склад работает в обычном режиме", "Каждая позиция привязана к своему месту хранения", "Учёт ведёт один сотрудник вместо двух", "Работает и на открытых площадках, без GPS", "Данные сразу в 1С, SAP и складской системе"], "f": [["22%", "запчастей на складах лежат без движения больше 5 лет¹"], ["в 30 раз", "быстрее учёт позиции: 2 сек вместо 64²"]], "srcl": [["¹ SPARETECH, опрос 300 производственных компаний, 2025", "https://reliamag.com/guides/mro-spare-parts-inventory-statistics/"]], "src": "² Данные разработчика."}, "rfid": {"pts": ["Видно, кому, что и какого размера выдано", "Вход на территорию — только в спецодежде: метка работает как пропуск", "Метка выдерживает стирки и химию", "Списанная спецодежда уходит в переработку", "Закупки точно по потребности"]}, "video": {"pts": ["Работает с уже установленными камерами", "Сама разбирает видео и находит нарушения", "Событие сразу уходит ответственному"]}, "vtc": {"pts": ["Перевозка машин до дилера под контролем", "GPS-мониторинг и история каждой машины", "Приложение для владельца"]}, "digital": {"pts": ["Обследуем процессы и находим, где теряются деньги", "Подбираем решения под задачу", "Запускаем пилот и считаем эффект в цифрах"]}, "queue": {"pts": ["Запись к специалисту заранее", "Поток пациентов распределяется сам, по загрузке врачей", "Зал ожидания остаётся свободным", "Пилот в больнице успешно завершён"]}, "kupol": {"pts": ["Сделана для МВД и служб безопасности", "Пример: часовой 5 минут не прошёл мимо камеры — система сразу поднимает тревогу", "События со всех систем видеоаналитики в одном окне", "Уведомления сразу приходят дежурным", "Реакция по утверждённым регламентам"]}, "meter": {"pts": ["Показания со всех приборов учёта тепла и воды в одной системе", "Данные подтягиваются и из других систем коммунальщиков", "Начисления и квитанции формируются автоматически", "Обход квартир для сбора показаний больше не нужен"]}, "ambulance": {"pts": ["Контроль состояния водителя в пути", "Подсказки бригаде по сценарию вызова и оказанию помощи", "Камеры вперёд и в салон: каждый выезд на записи"]}, "navigo": {"pts": ["Приложение определяет, где стоит человек, и ведёт его по маршруту", "Маршрут до нужного кабинета, магазина или гейта", "Работает внутри зданий, без GPS", "Больницы, ТЦ, аэропорты, вокзалы"]}, "bath": {"f": [["на 63%", "выше средний чек у салонов и СПА, где предлагают допуслуги¹"], ["10–15%", "роста выручки дают персональные рекомендации²"]], "srcl": [["¹ Boulevard, данные тысяч салонов и СПА, 2025", "https://www.joinblvd.com/blog/boosting-revenue-with-add-ons"], ["² McKinsey, Next in Personalization, 2021", "https://businesschief.com/technology-and-ai/mckinsey-prioritise-personalisation-for-10-15-revenue-lift"]], "pts": ["ИИ подбирает гостю процедуры под его состояние и предлагает их докупить", "Акции и новые услуги гость видит прямо в приложении", "Допродажа в каждом визите без участия администратора", "Бронирование и оплата в приложении на iOS и Android", "Посещения, абонементы и вся работа комплекса в одной CRM"]}, "speech": {"pts": ["Устные договорённости сохраняются сами, даже вне регламентов и писем", "Новый сотрудник сам находит ответ в базе за минуту", "Уходит сотрудник — его знания остаются в компании", "Итоги и задачи после каждой встречи уходят ответственным", "Понимает казахский, работает на серверах компании"], "site": "https://speech.systems", "f": [["42%", "знаний компании есть только в голове у одного сотрудника¹"], ["5,3 часа", "в неделю уходит на ожидание ответов и повторную работу¹"]], "srcl": [["¹ Panopto, опрос 1 000 сотрудников, 2018", "https://www.hrdive.com/news/inefficient-knowledge-sharing-costs-large-us-businesses-47m-a-year/527892/"]]}, "kfo": {"pts": ["Пакет отчётности собирается прямо из 1С", "Сверка внутри группы закрывается автоматически", "Ошибки видны до сдачи в фонд", "Любая цифра раскрывается до проводки"], "f": [["в 2,5 раза", "быстрее закрывают отчётность компании-лидеры¹"], ["48", "форм пакета уже настроено"]], "src": "¹ APQC, исследование 4 938 компаний.", "doc": "docs/kfo-otchetnost-gruppy.pdf"}, "dev": {"pts": ["Личные кабинеты для клиентов и внутренние порталы", "Сайты и приложения под ваши процессы", "От проектирования до запуска и поддержки"]}, "web": {"pts": ["Понятная подача вашего предложения", "Формы заявок", "Аналитика: видно, откуда приходят клиенты"]}, "installment": {"pts": ["Клиент покупает сейчас, а платит частями", "Рассрочка подключается к вашим продажам", "Подходит клиникам, магазинам и сервисам"], "f": [["в 2 раза", "выше средний чек¹"]], "src": "¹ Kaspi.", "site": "https://moneyfesto.ru"}, "dlp": {"lead": "Видно, кто и что выносит из компании, ещё до потери.", "pts": ["ИИ сам находит попытку утечки и сразу присылает отчёт", "Видит, что уходит через Telegram и WhatsApp", "Лёгкий агент для Windows, Linux и macOS", "Своя разработка, все данные остаются в компании"], "f": [["60 млн ₸", "хищений нашла система у одного клиента"], ["12 млн ₸", "вложил клиент в систему"]], "doc": "docs/dlp-zashchita-ot-utechek.pdf", "site": "https://tamgasoft.kz"}, "simbase": {"pts": ["Документы согласуются онлайн, без бумаги и беготни по кабинетам", "Видно, кто, что и когда сделал: дисциплина и порядок без ручного контроля", "Уходит сотрудник — процесс продолжает работать", "Процесс перестраивается без программистов", "Работает в Банке развития Казахстана"], "f": [["5 000+", "процессов автоматизировано¹"], ["150+", "проектов в 18 странах¹"]], "src": "¹ Данные разработчика.", "doc": "docs/avtomatizaciya-processov.pdf", "site": "https://www.simourg.com"}, "tender": {"lead": "Электронная площадка для закупок по вашим правилам.", "pts": ["На каждую заявку приходит больше поставщиков", "Все цены в одном виде, лучшее видно за минуты", "Договоры подписываются ЭЦП", "Итоги закупки сами попадают в бухгалтерию и на склад"], "f": [["до 23%", "экономии после перехода на электронные закупки¹"], ["600 млрд ₸", "закупок в год через площадку разработчика"]], "src": "¹ Самрук-Казына, итоги закупок 2020.", "doc": "docs/elektronnye-zakupki.pdf", "site": "https://eep.mitwork.kz"}, "onec": {"pts": ["Разбираем учёт в группе компаний", "Наводим порядок в 1С", "Убираем двойной ввод"]}, "blast": {"pts": ["Каждый заряд на учёте от склада до забоя", "Подрыв только по отпечатку пальца ответственного", "Каждый подрыв подтверждён конкретным человеком", "Система уже работает на горно-обогатительном комбинате"]}, "metal": {"f": [["100 кг", "земли могут подмешать на каждую тонну руды¹"], ["до 50%", "металла могут увести на переделе, подправив отчёты¹"]], "src": "¹ Данные разработчика.", "pts": ["Весы и датчики на каждом переделе", "Видно, сколько металла должно было выйти и сколько вышло", "Потери находятся по месту"]}, "power": {"pts": ["Энергия — одна из трёх главных статей расходов предприятия, вместе с зарплатами и запчастями", "ИБП и дизель-генераторы производства партнёрского завода в Алматы", "Защита от остановки из-за сбоя питания"]}, "it": {"pts": ["Серверы, сеть и лицензии", "Оплата через 90 дней", "Без заморозки бюджета"]}};
+let lastBtn=null;
+function openP(id,btn){lastBtn=btn;const m=document.getElementById("modal");m.querySelector(".mbody").innerHTML=card(id);m.querySelector(".mbox").classList.remove("wide");m.querySelector(".mbox").scrollTop=0;m.hidden=false;m.querySelector(".mclose").focus()}
+let dlNs=null;const dlP=(window.claude&&claude.use)?claude.use("downloads").then(n=>dlNs=n).catch(()=>null):Promise.resolve(null);
+async function getDoc(b){const url=new URL(b.dataset.doc,location.href).href,lbl=b.innerHTML;
+if(!(window.claude&&claude.use)){const a=document.createElement("a");a.href=url;a.download=b.dataset.fn;document.body.appendChild(a);a.click();a.remove();return}b.disabled=true;b.textContent="Загружаю…";
+try{await Promise.race([dlP,new Promise(r=>setTimeout(r,1500))]);
+ if(dlNs){const r=await fetch(url);if(!r.ok)throw 0;const blob=await r.blob();await dlNs.save({filename:b.dataset.fn,data:blob});}
+ else{window.open(url,"_blank","noopener")||(location.href=url)}}
+catch(e){if(!e||e.code!=="declined")window.open(url,"_blank","noopener")}
+finally{b.disabled=false;b.innerHTML=lbl}}
+function ctc(from){const t=from&&P[from]?P[from].t:"";const subj=encodeURIComponent(t?"Портфель: "+t:"Портфель решений");
+ return `<article class="prod ctc"><span class="pname">Обсудить${t?" · "+esc(t):""}</span><h3 class="val">Расскажите о задаче</h3><p>За одну встречу покажем, какие решения подойдут и с чего начать пилот.</p><div class="ctl"><span>Куат Абдрахманов</span><a href="tel:+77710228888">+7 771 022 88 88</a><a href="mailto:kuat@telematika.kz?subject=${subj}">kuat@telematika.kz</a></div><div class="pact">${t?`<button class="pbtn" data-p="${from}"><span aria-hidden="true">←</span> Вернуться к решению</button>`:`<button class="pbtn" data-close>Продолжить изучение</button>`}</div></article>`}
+function openC(from,btn){if(btn)lastBtn=btn;const m=document.getElementById("modal");m.querySelector(".mbody").innerHTML=ctc(from);m.querySelector(".mbox").classList.remove("wide");m.querySelector(".mbox").scrollTop=0;m.hidden=false;m.querySelector(".mclose").focus()}
+function closeP(){const m=document.getElementById("modal");m.hidden=true;if(lastBtn)lastBtn.focus()}
+function how(){return `<div class="screen"><div class="inner">
+ <span class="eyebrow">Как работаем</span><h2>От встречи до работающей системы</h2>
+ <div class="steps">
+ <div class="step"><span class="num">01</span><h3>Встреча</h3><p class="muted">Разбираем задачу и выбираем, с чего начать</p></div>
+ <div class="step"><span class="num">02</span><h3>Обследование</h3><p class="muted">Смотрим процессы и системы на месте, готовим предложение</p></div>
+ <div class="step hl"><span class="num">03</span><h3>Пилот</h3><p class="muted">Запускаем на одном участке и считаем эффект</p></div>
+ <div class="step"><span class="num">04</span><h3>Внедрение</h3><p class="muted">Масштабируем, связываем с SAP, 1С и ERP, сопровождаем</p></div></div>
+ </div></div>`}
+function contact(){return `<div class="screen dark"><div class="stripe"></div><div class="inner">
+ <div class="grow"></div><div style="display:flex;flex-direction:column;gap:22px"><h1>Расскажите о задаче</h1>
+ <p class="lead muted">За одну встречу покажем, какие решения подойдут и с чего начать пилот.</p></div>
+ <div class="grow"></div><div class="actions" style="gap:32px;font-size:20px"><span>Куат Абдрахманов</span><a href="tel:+77710228888" style="color:var(--accent);text-decoration:none">+7 771 022 88 88</a><a href="mailto:kuat@telematika.kz" style="color:inherit;text-decoration:none">kuat@telematika.kz</a></div></div></div>`}
+app.addEventListener("click",e=>{if(e.target.closest("[data-back]")){goBack();return}const z=e.target.closest("[data-z]");if(z){selZ=+z.dataset.z;const {a}=cur();const y=window.scrollY;sec(a);window.scrollTo(0,y);const f=document.querySelector(`[data-z="${selZ}"]`);if(f)f.focus();return}const k=e.target.closest("[data-contact]");if(k){openC(k.dataset.contact,k);return}const c=e.target.closest("[data-p]");if(c){openP(c.dataset.p,c);return}const g=e.target.closest("[data-go]");if(g)go(g.dataset.go)});
+document.getElementById("modal").addEventListener("click",e=>{const d=e.target.closest("[data-doc]");if(d){getDoc(d);return}const k=e.target.closest("[data-contact]");if(k){openC(k.dataset.contact);return}const bp=e.target.closest(".mbody [data-p]");if(bp){openP(bp.dataset.p);return}if(e.target.closest("[data-close]")){closeP();return}const g=e.target.closest("[data-go]");if(g){closeP();go(g.dataset.go)}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!document.getElementById("modal").hidden){closeP();return}if(e.key==="Escape"){const {v}=cur();go(v==="sec"?"menu":"menu")}});
+const PARENT={about:"cover",menu:"about",sec:"menu",how:"menu",contact:"menu"};
+function goBack(){location.hash="#menu"}
+window.addEventListener("hashchange",render);render();
+function curBlk(){const bs=[...document.querySelectorAll(".blk")];let bi=0,bd=1e9;bs.forEach((x,i)=>{const d=Math.abs(x.getBoundingClientRect().top);if(d<bd){bd=d;bi=i}});return [bs,bi]}
+document.addEventListener("keydown",e=>{if(cur().v==="sec"||!document.getElementById("modal").hidden)return;const [bs,i]=curBlk();if(!bs.length)return;
+ if(["ArrowDown","PageDown"].includes(e.key)){e.preventDefault();bs[Math.min(i+1,bs.length-1)].scrollIntoView({behavior:"smooth"})}
+ if(["ArrowUp","PageUp"].includes(e.key)){e.preventDefault();bs[Math.max(i-1,0)].scrollIntoView({behavior:"smooth"})}});
+</script>
